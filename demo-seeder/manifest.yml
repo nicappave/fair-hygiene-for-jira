@@ -1,0 +1,26 @@
+# Dev-only seeder for the demo site. NOT part of the Codegeist submission.
+# It acts as the fictional demo users (offline impersonation) so their notes
+# and time logs carry their own names, then gets uninstalled.
+app:
+  id: ari:cloud:ecosystem::app/0a5ae82d-788e-4e62-9f9a-7aec70dccf5a
+  runtime:
+    name: nodejs22.x
+
+modules:
+  webtrigger:
+    - key: seed
+      function: seed-fn
+      response:
+        type: dynamic
+  function:
+    - key: seed-fn
+      handler: index.seed
+
+permissions:
+  scopes:
+    read:jira-work:
+      allowImpersonation: true
+    write:jira-work:
+      allowImpersonation: true
+    read:jira-user:
+      allowImpersonation: true

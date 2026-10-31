@@ -1,0 +1,8 @@
+{
+  "name": "fair-hygiene-demo-seeder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Temporary dev-only Forge app that writes the fictional demo team's activity on the demo site, acting as each invented user. Not part of the submission; uninstall after seeding.",
+  "main": "src/index.js",
+  "dependencies": { "@forge/api": "^8.4.0" }
+}

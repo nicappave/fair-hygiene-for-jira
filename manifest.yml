@@ -1,0 +1,113 @@
+# Fair Hygiene for Jira. `app.id` was written by `forge register`.
+app:
+  id: ari:cloud:ecosystem::app/d99db332-c15b-4a47-a759-d50e9e2675ca
+  runtime:
+    name: nodejs22.x
+  licensing:
+    enabled: false
+
+modules:
+  jira:projectPage:
+    - key: fair-hygiene-page
+      title: Team hygiene
+      resource: main
+      resolver:
+        function: ui-resolver
+      render: native
+      layout: native
+
+  function:
+    - key: ui-resolver
+      handler: index.handler
+    - key: action-report
+      handler: index.getHygieneReport
+    - key: action-explain
+      handler: index.explainPersonScore
+
+  llm:
+    - key: hygiene-judge
+      model:
+        - claude
+
+  rovo:agent:
+    - key: hygiene-coach
+      name: Hygiene Coach
+      description: Explains a team's weekly work-hygiene scores and the one habit that
+        would lift each person's.
+      prompt: |
+        You are Hygiene Coach, a calm assistant for team leads and the people on their team.
+        You explain weekly work-hygiene scores computed by the Fair Hygiene app for a Jira project.
+        Pillars: time logged on the same day the work happened, and proof of work (a link, file,
+        screenshot or descriptive note) posted by the end of the week. Notes that say there was nothing
+        to do, and late or stalled issues with an explanation, were judged individually by Claude, and a
+        lead can overrule any verdict on the Team hygiene page.
+
+        Use the get-hygiene-report action for team questions and explain-person-score for one person.
+        Lead with the answer and the numbers. For a person, name the single habit that would lift their
+        score most (their biggestLever) and the failed issues behind it. Never shame anyone, never
+        speculate about why someone missed something, and never invent numbers that are not in the
+        action result. If a judgement is still pending, say so rather than guessing its outcome.
+      conversationStarters:
+        - How did the team do on hygiene last week?
+        - Why is my hygiene score what it is?
+        - Which overdue issues have no real explanation?
+      actions:
+        - get-hygiene-report
+        - explain-person-score
+
+  action:
+    - key: get-hygiene-report
+      name: Get team hygiene report
+      function: action-report
+      actionVerb: GET
+      description: |
+        Returns the weekly hygiene report for a Jira project: per-person rates for same-day time and
+        proof of work, the pass / at risk / fail gate, lateness, open overdue and stale issues, and the
+        notes Claude judged.
+      inputs:
+        projectKey:
+          title: Project key
+          type: string
+          required: false
+          description: Jira project key, for example DEMO. Taken from the current project
+            when omitted.
+        weekStart:
+          title: Week start
+          type: string
+          required: false
+          description: Any date in the week to report on, YYYY-MM-DD. Defaults to last
+            full week.
+    - key: explain-person-score
+      name: Explain a person's hygiene score
+      function: action-explain
+      actionVerb: GET
+      description: |
+        Explains one person's weekly hygiene score in a Jira project: which issues failed and why,
+        which notes were judged and the verdicts, and the habit that would lift the score most.
+      inputs:
+        person:
+          title: Person
+          type: string
+          required: true
+          description: The person's display name, or part of it.
+        projectKey:
+          title: Project key
+          type: string
+          required: false
+          description: Jira project key. Taken from the current project when omitted.
+        weekStart:
+          title: Week start
+          type: string
+          required: false
+          description: Any date in the week to report on, YYYY-MM-DD. Defaults to last
+            full week.
+
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+
+permissions:
+  scopes:
+    - read:jira-work
+    - read:jira-user
+    - storage:app

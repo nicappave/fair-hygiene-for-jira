@@ -1,0 +1,12 @@
+node_modules/
+.forge/
+*.log
+.env
+scripts/.seed_url
+scripts/demo_keys.json
+SUBMIT.md
+scripts/demo_users.json
+__pycache__/
+scripts/pw.py
+scripts/pty_drive.py
+scripts/jira_admin.py
