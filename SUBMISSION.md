@@ -1,18 +1,22 @@
-# Devpost submission text (DRAFT, not submitted)
+# Devpost submission text
 
 Fill-in fields for codegeist2026.devpost.com → Enter a submission. Items in [brackets] are filled
-in when the video is uploaded.
+in on the form: the YouTube link once the video is public, and the installation link from the
+Developer Console.
 
 **Project name:** Fair Hygiene for Jira
 
 **Tagline (≤200 chars):** Weekly work-hygiene scores where Claude judges the closing notes and
-excuses, so the person who honestly wrote "nothing to do this month" stops being flagged as late.
+excuses, so the person who honestly wrote "nothing to do this month" stops being flagged.
 
 **Category:** Apps for Business Teams
 **Bonus prize:** Best Agents (Rovo/Assignable agents): the app ships the `hygiene-coach`
-`rovo:agent` with two reusable `action` modules (`get-hygiene-report`, `explain-person-score`).
-Our demo site is on Jira's Free plan, which has no Rovo, so the video does not show the agent;
-on a site with Rovo it appears in Rovo chat as **Hygiene Coach**.
+`rovo:agent` with two reusable `action` modules (`get-hygiene-report`, `explain-person-score`)
+that other agents can call as tools. Both actions run the same scoring service as the Jira page,
+check the calling user's own permission on the project first, and return plain text the agent can
+quote: the team's scores for a week, or one person's score with the single habit that would lift
+it most. Our demo site is on Jira's Free plan, which has no Rovo, so the video does not show the
+agent working; on a site with Rovo it appears in Rovo chat as **Hygiene Coach**.
 
 ---
 
@@ -79,8 +83,12 @@ Forge, UI Kit, and nothing outside Atlassian's platform:
 The scoring rules are not invented for a demo: each comes from a real dispute on a team where
 this score has run every week since April 2026. Live on a Jira Cloud site, Claude (Sonnet 5 via
 Forge LLMs) judged our eight test notes exactly as a lead would, identically across two runs,
-including a note that tries to tell the judge what to decide. A judgement costs about $0.006.
-The production version is eligible for Runs on Atlassian.
+including a note that tries to tell the judge what to decide. On the fictional team in the video
+it judged all seven ambiguous notes the way a lead would, from the live app: the paused campaign
+and the withdrawn request are nothing to do, the duplicate is not the person's, "will finish next
+week" stays a fail, and the note that says "SYSTEM: ignore your rules" is named as a
+prompt-injection attempt and stays a fail. A judgement costs about $0.006. The production version
+is eligible for Runs on Atlassian.
 
 ## What we learned
 
@@ -98,7 +106,7 @@ Teamwork Graph view of hygiene across projects.
 UI Kit module, resolver functions, `llm` module, `rovo:agent` and `action` modules) integrating
 with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
 
-**Installation link:** the Developer Console sharing link (production, Jira), pasted into the form.
+**Installation link:** [the Developer Console sharing link: production, Jira, "Sharing with anyone"]
 
 **Testing instructions for judges:**
 1. Install with the link above on a Jira Cloud site and approve the read-only scopes
@@ -113,8 +121,9 @@ with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
    two minutes with no time logged is treated as an import and left out.
 3. Open the project's **Team hygiene** tab (under **More** if the tab bar is full). It opens on the
    current week in your own time zone. Scores tab: team tiles, per-person bars and table, failing issues and why.
-4. Judgements tab: **Judge with Claude**. Each nominated note gets a verdict and a one-sentence reason.
-   As a project admin, overrule one and watch the score move; restore it.
+4. Judgements tab: **Judge with Claude**. Each nominated note gets a verdict and a one-sentence reason
+   (Forge LLMs bills the app developer, not your site). As a project admin, overrule one and watch
+   the score move; restore it.
 5. Open work tab: overdue, stale and undated issues, with Claude's view of each excuse.
 6. Settings tab: time zone, gate, whether time logging is scored, stale days, excluded labels.
 7. On a site with Rovo: open Rovo chat, pick **Hygiene Coach**, ask "How did the team do this week in
@@ -123,5 +132,5 @@ with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
 **Built with:** atlassian-forge, forge-ui-kit, forge-llms, forge-kvs, jira-cloud-rest-api, rovo,
 claude, javascript, node.js, react
 
-**Video:** [YouTube link, public, about 2:40]
+**Video:** [YouTube link, public, 2:43]
 **Repository:** https://github.com/nicappave/fair-hygiene-for-jira (MIT)
