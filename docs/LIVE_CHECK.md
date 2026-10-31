@@ -30,3 +30,18 @@ Model picked at runtime from `list()`: **claude-sonnet-5** (active models: Haiku
 
 Per judgement about 1,600 input and 107 output tokens. Two runs: 25,554 input and 1,730 output
 tokens, about **$0.10** at Sonnet rates ($3 / $15 per million), i.e. about **$0.006 per judgement**.
+
+## Live UI check in Jira (31 Oct 2026, production v2.1+)
+
+Project TEST ("UI smoke test (demo data)", six issues by the site owner), app page opened from the
+project's tabs, week of 26 Oct picked in the date picker:
+- **Scores:** 3 counted, 67% before verdicts; one fail for no proof of work; 3 notes held out.
+- **Judge with Claude** (live, from the page): "Will finish next week" → fail stands; "Customer paused this
+  until January" → nothing to do; overdue "Blocked: waiting on the vendor API keys" → explained.
+  Score after verdicts: 60% (3 of 5), chart shows 3 passed / 2 failed.
+- **Overrule:** first attempt refused for a Jira site admin (the check only accepted project-admin);
+  fixed to accept `ADMINISTER` too, redeployed, then overrule → "Not theirs, set by lead" and
+  **Restore Claude's verdict** both worked.
+- **Rovo:** not available on this Free site (the Rovo chat link redirects to the Rovo sales page), so the
+  Hygiene Coach agent could not be exercised here.
+- Total AI spend for the day after this check: about $0.12.

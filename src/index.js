@@ -21,13 +21,17 @@ const projectOf = (context) => {
 // CALLING user holds the permission in that project: browsing to see a report,
 // administering to change settings or overrule a verdict.
 async function assertPermission(projectKey, permission) {
+  // A Jira administrator counts as a project admin everywhere: the project's
+  // permission scheme does not list them, but they can administer it anyway.
+  const asked = permission === 'ADMINISTER_PROJECTS' ? 'ADMINISTER_PROJECTS,ADMINISTER' : permission;
   const res = await api.asUser().requestJira(
-    route`/rest/api/3/mypermissions?projectKey=${projectKey}&permissions=${permission}`,
+    route`/rest/api/3/mypermissions?projectKey=${projectKey}&permissions=${asked}`,
     { headers: { Accept: 'application/json' } },
   );
   const body = res.ok ? await res.json() : {};
-  const p = body.permissions && body.permissions[permission];
-  if (!p || !p.havePermission) {
+  const granted = asked.split(',').some((k) => body.permissions && body.permissions[k]
+    && body.permissions[k].havePermission);
+  if (!granted) {
     throw new Error(permission === 'ADMINISTER_PROJECTS'
       ? 'Only a project admin can change settings or verdicts.'
       : `You do not have access to project ${projectKey}.`);

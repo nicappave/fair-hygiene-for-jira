@@ -94,7 +94,7 @@ function Team({ report }) {
         <Stat label="Notes awaiting a verdict" value={report.team.pendingReview} hint="held out of scores until judged" />
       </Inline>
       {report.members.length ? (
-        <HorizontalStackBarChart data={chart} xAccessor="issues" yAccessor="person" colorAccessor="outcome" title="Closed issues this week" />
+        <HorizontalStackBarChart data={chart} xAccessor="person" yAccessor="issues" colorAccessor="outcome" title="Closed issues this week" />
       ) : null}
       <DynamicTable head={head} rows={rows} emptyView={<Text>Nobody closed an issue in this week.</Text>} />
       {report.members.map((m) => <PersonFails key={m.id} member={m} />)}
@@ -277,7 +277,6 @@ function App() {
     <Stack space="space.300">
       <Inline space="space.200" alignBlock="end" spread="space-between">
         <Stack space="space.050">
-          <Heading size="medium">Team hygiene</Heading>
           <Text>{report ? `Week of ${report.window.weekStart} to ${report.window.weekEnd} (${report.window.timeZone})` : ' '}</Text>
         </Stack>
         <Inline space="space.100" alignBlock="end">
