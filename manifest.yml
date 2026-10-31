@@ -75,8 +75,8 @@ modules:
           title: Week start
           type: string
           required: false
-          description: Any date in the week to report on, YYYY-MM-DD. Defaults to last
-            full week.
+          description: Any date in the week to report on, YYYY-MM-DD. Defaults to the
+            current week.
     - key: explain-person-score
       name: Explain a person's hygiene score
       function: action-explain
@@ -99,8 +99,8 @@ modules:
           title: Week start
           type: string
           required: false
-          description: Any date in the week to report on, YYYY-MM-DD. Defaults to last
-            full week.
+          description: Any date in the week to report on, YYYY-MM-DD. Defaults to the
+            current week.
 
 resources:
   - key: main

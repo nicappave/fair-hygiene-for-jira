@@ -3,9 +3,14 @@
 
 import { scorePeriod, VERDICTS } from './core/scorer.js';
 import { mergeConfig } from './core/rules.js';
-import { weekWindow, previousWeekStart } from './core/time.js';
+import { weekWindow, localDate } from './core/time.js';
 import { fetchPeriod } from './jira/client.js';
 import { judgeItem } from './llm/judge.js';
+
+const validZone = (tz) => {
+  if (!tz || typeof tz !== 'string') return false;
+  try { new Intl.DateTimeFormat('en', { timeZone: tz }); return true; } catch { return false; }
+};
 
 const allItems = (report) => {
   const items = [];
@@ -48,9 +53,11 @@ export function slimReport(report) {
   };
 }
 
-export async function buildReport({ request, store, projectKey, weekStart, nowMs = Date.now() }) {
-  const config = mergeConfig(await store.getConfig(projectKey));
-  const window = weekWindow(weekStart || previousWeekStart(nowMs, config.timeZone), config.timeZone);
+// `timeZone` is the viewer's own zone, used only until a project admin saves
+// one in Settings. With no week given, the report shows the current week so far.
+export async function buildReport({ request, store, projectKey, weekStart, timeZone, nowMs = Date.now() }) {
+  const config = mergeConfig({ ...(validZone(timeZone) ? { timeZone } : {}), ...(await store.getConfig(projectKey)) });
+  const window = weekWindow(weekStart || localDate(nowMs, config.timeZone), config.timeZone);
   const period = await fetchPeriod(request, { projectKey, window });
   const input = {
     closedIssues: [...period.closedIssues, ...period.relatedIssues],

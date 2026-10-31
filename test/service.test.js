@@ -122,3 +122,15 @@ test('service: the UI payload drops the evidence bundle; the agent view has the 
   assert.deepEqual(agent.people[0].biggestLever, { reason: 'no_proof', count: 4 });
   assert.equal(agent.period, '2026-10-19 to 2026-10-25 (Asia/Singapore)');
 });
+
+test('service: no week given -> current week; the viewer\'s zone applies until a project saves one', async () => {
+  const store = memoryStore();
+  const r = await buildReport({ request: fixtureJira().request, store, projectKey: 'DEMO', timeZone: 'Asia/Singapore', nowMs: NOW });
+  assert.equal(r.window.weekStart, '2026-10-26');
+  assert.equal(r.window.timeZone, 'Asia/Singapore');
+  const bogus = await buildReport({ request: fixtureJira().request, store, projectKey: 'DEMO', timeZone: 'Mars/Olympus', nowMs: NOW });
+  assert.equal(bogus.window.timeZone, 'UTC');
+  await store.setConfig('DEMO', { timeZone: 'Europe/Paris' });
+  const saved = await buildReport({ request: fixtureJira().request, store, projectKey: 'DEMO', timeZone: 'Asia/Singapore', nowMs: NOW });
+  assert.equal(saved.window.timeZone, 'Europe/Paris');
+});

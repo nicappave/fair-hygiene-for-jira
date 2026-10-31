@@ -241,7 +241,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      setReport(await invoke('getReport', { weekStart: week }));
+      setReport(await invoke('getReport', { weekStart: week, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
     } catch (e) {
       setError(e.message || String(e));
     }

@@ -44,7 +44,8 @@ resolver.define('getReport', async ({ payload, context }) => {
   const projectKey = projectOf(context);
   await assertPermission(projectKey, 'BROWSE_PROJECTS');
   const report = await buildReport({
-    request: forgeJiraRequest(), store: forgeStore, projectKey, weekStart: payload.weekStart,
+    request: forgeJiraRequest(), store: forgeStore, projectKey,
+    weekStart: payload.weekStart, timeZone: payload.timeZone || context.timezone,
   });
   return slimReport(report);
 });
@@ -65,7 +66,10 @@ resolver.define('override', async ({ payload, context }) => {
   return overrideVerdict({ store: forgeStore, projectKey, ...payload });
 });
 
-resolver.define('getConfig', async ({ context }) => mergeConfig(await forgeStore.getConfig(projectOf(context))));
+resolver.define('getConfig', async ({ context }) => mergeConfig({
+  ...(context.timezone ? { timeZone: context.timezone } : {}),
+  ...(await forgeStore.getConfig(projectOf(context))),
+}));
 
 resolver.define('setConfig', async ({ payload, context }) => {
   const projectKey = projectOf(context);
