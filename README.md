@@ -48,7 +48,7 @@ current week, in your own time zone until a project admin saves one. Project adm
 can change the time zone, the gate, whether time logging is scored, stale days and excluded labels on
 the Settings tab, and overrule any verdict.
 
-Forge LLMs is billed to the app developer per token (no free allowance); a judgement costs about
+Forge LLMs is billed to the app developer per token (no free allowance); a judgement costs
 about $0.006 on Claude Sonnet 5 (measured live). The app judges only nominated notes, and only when a user clicks
 **Judge with Claude**.
 

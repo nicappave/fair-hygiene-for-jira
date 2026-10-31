@@ -27,6 +27,10 @@ const DECISION = {
   legitimate: ['success', 'Explained'],
   not_legitimate: ['removed', 'Not explained'],
 };
+// Atlassian design-system chart colours (success.bold, danger.bold, neutral) as hex: the
+// chart takes raw colours, and its default palette drew fails in green.
+// In the order the outcomes appear in the data: Passed, Failed, Awaiting verdict.
+const CHART_COLORS = ['#22A06B', '#C9372C', '#8590A2'];
 const KIND = { deferral: 'Closing note', late: 'Late close', open: 'Overdue / stale' };
 const panel = xcss({ paddingBlock: 'space.200' });
 const card = xcss({ padding: 'space.200', borderRadius: 'border.radius', backgroundColor: 'elevation.surface.sunken' });
@@ -94,7 +98,10 @@ function Team({ report }) {
         <Stat label="Notes awaiting a verdict" value={report.team.pendingReview} hint="held out of scores until judged" />
       </Inline>
       {report.members.length ? (
-        <HorizontalStackBarChart data={chart} xAccessor="person" yAccessor="issues" colorAccessor="outcome" title="Closed issues this week" />
+        <HorizontalStackBarChart
+          data={chart} xAccessor="person" yAccessor="issues" colorAccessor="outcome" title="Closed issues this week"
+          colorPalette={CHART_COLORS}
+        />
       ) : null}
       <DynamicTable head={head} rows={rows} emptyView={<Text>Nobody closed an issue in this week.</Text>} />
       {report.members.map((m) => <PersonFails key={m.id} member={m} />)}
@@ -166,14 +173,17 @@ function Verdict({ item, onOverride }) {
         </Inline>
         {item.note ? <Text><Text as="em">Note:</Text> {item.note}</Text> : null}
         {item.reason ? <Text><Text weight="bold">Why:</Text> {item.reason}</Text> : null}
-        <ButtonGroup label="Overrule">
-          {options.filter((o) => o !== item.decision).map((o) => (
-            <Button key={o} appearance="subtle" spacing="compact" onClick={() => onOverride(item, o)}>{DECISION[o][1]}</Button>
-          ))}
-          {item.source === 'lead' ? (
-            <Button appearance="subtle" spacing="compact" onClick={() => onOverride(item, null)}>Restore Claude's verdict</Button>
-          ) : null}
-        </ButtonGroup>
+        <Inline space="space.100" alignBlock="center">
+          <Text size="small">Overrule:</Text>
+          <ButtonGroup label="Overrule">
+            {options.filter((o) => o !== item.decision).map((o) => (
+              <Button key={o} appearance="subtle" spacing="compact" onClick={() => onOverride(item, o)}>{DECISION[o][1]}</Button>
+            ))}
+            {item.source === 'lead' ? (
+              <Button appearance="subtle" spacing="compact" onClick={() => onOverride(item, null)}>Restore Claude's verdict</Button>
+            ) : null}
+          </ButtonGroup>
+        </Inline>
       </Stack>
     </Box>
   );
@@ -236,6 +246,7 @@ function App() {
   const [judging, setJudging] = useState(false);
   const [progress, setProgress] = useState(0);
   const [notice, setNotice] = useState(null);
+  const [tab, setTab] = useState(0);
 
   const load = useCallback(async (week) => {
     setLoading(true);
@@ -282,7 +293,7 @@ function App() {
         <Inline space="space.100" alignBlock="end">
           <Stack space="space.050">
             <Label labelFor="week">Any day in the week</Label>
-            <DatePicker id="week" value={weekStart || undefined} onChange={(d) => setWeekStart(d)} />
+            <DatePicker id="week" value={weekStart || (report && report.window.weekStart) || undefined} onChange={(d) => setWeekStart(d)} />
           </Stack>
           <Button onClick={() => load(weekStart)}>Refresh</Button>
         </Inline>
@@ -291,7 +302,7 @@ function App() {
       {error ? <SectionMessage appearance="error" title="Could not build the report"><Text>{error}</Text></SectionMessage> : null}
       {loading && !report ? <Spinner label="Reading this week's issues" /> : null}
       {report ? (
-        <Tabs id="views">
+        <Tabs id="views" selected={tab} onChange={(i) => setTab(i)}>
           <TabList>
             <Tab>Scores</Tab>
             <Tab>{`Judgements${report.pending.length ? ` (${report.pending.length})` : ''}`}</Tab>

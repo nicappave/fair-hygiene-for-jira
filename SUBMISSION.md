@@ -29,6 +29,8 @@ ambiguous few. Fair Hygiene brings that to Jira.
 
 ## What it does
 
+For team leads who review their team's Jira work every week, and for the people being scored.
+
 - Scores each assignee per week on **same-day time** and **proof of work**, with a configurable
   gate (pass / at risk / below gate) and no gate under five issues.
 - **Leaves out** issues that say nothing about the person: closed by someone else or an
@@ -59,7 +61,7 @@ Forge, UI Kit, and nothing outside Atlassian's platform:
 - **Rovo agent** `hygiene-coach` with actions `get-hygiene-report` and `explain-person-score`.
 - Read-only scopes, no egress. The app reads as itself so a lead sees the whole team, and every
   entry point checks the calling user's own project permission first.
-- The scoring core is pure and fully tested: 36 tests on fixtures written in Jira's wire format.
+- The scoring core is pure and fully tested: 37 tests on fixtures written in Jira's wire format.
 
 ## Challenges
 
@@ -118,5 +120,8 @@ with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
 7. On a site with Rovo: open Rovo chat, pick **Hygiene Coach**, ask "How did the team do this week in
    <project key>?" or "Why is <name>'s score low?".
 
-**Video:** [YouTube link, public, under 3 minutes]
+**Built with:** atlassian-forge, forge-ui-kit, forge-llms, forge-kvs, jira-cloud-rest-api, rovo,
+claude, javascript, node.js, react
+
+**Video:** [YouTube link, public, about 2:40]
 **Repository:** https://github.com/nicappave/fair-hygiene-for-jira (MIT)
