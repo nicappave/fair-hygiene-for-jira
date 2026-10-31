@@ -1,4 +1,4 @@
-# Demo video: narration and shot list (2:43, hard limit under 5:00)
+# Demo video: narration and shot list (2:44, hard limit under 5:00)
 
 Captured from the live app on our demo site: project DEMO "Paper Kite Studio", a fictional team
 (Ana, Ben, Chen, Dara are demo accounts), week of 26 Oct 2026. Headless Chrome at 2x, no music,

@@ -132,5 +132,5 @@ with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
 **Built with:** atlassian-forge, forge-ui-kit, forge-llms, forge-kvs, jira-cloud-rest-api, rovo,
 claude, javascript, node.js, react
 
-**Video:** [YouTube link, public, 2:43]
+**Video:** [YouTube link, public, 2:44]
 **Repository:** https://github.com/nicappave/fair-hygiene-for-jira (MIT)
