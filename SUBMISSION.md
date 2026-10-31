@@ -1,7 +1,7 @@
 # Devpost submission text (DRAFT, not submitted)
 
-Fill-in fields for codegeist2026.devpost.com → Enter a submission. Items in [brackets] are known
-only after deploy.
+Fill-in fields for codegeist2026.devpost.com → Enter a submission. Items in [brackets] are filled
+in when the video is uploaded.
 
 **Project name:** Fair Hygiene for Jira
 
@@ -10,7 +10,9 @@ excuses, so the person who honestly wrote "nothing to do this month" stops being
 
 **Category:** Apps for Business Teams
 **Bonus prize:** Best Agents (Rovo/Assignable agents): the app ships the `hygiene-coach`
-`rovo:agent` with two `action` modules.
+`rovo:agent` with two reusable `action` modules (`get-hygiene-report`, `explain-person-score`).
+Our demo site is on Jira's Free plan, which has no Rovo, so the video does not show the agent;
+on a site with Rovo it appears in Rovo chat as **Hygiene Coach**.
 
 ---
 
@@ -94,7 +96,7 @@ Teamwork Graph view of hygiene across projects.
 UI Kit module, resolver functions, `llm` module, `rovo:agent` and `action` modules) integrating
 with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
 
-**Installation link:** [from Developer Console → Distribution → Start sharing]
+**Installation link:** the Developer Console sharing link (production, Jira), pasted into the form.
 
 **Testing instructions for judges:**
 1. Install with the link above on a Jira Cloud site and approve the read-only scopes
@@ -107,13 +109,14 @@ with Jira (REST v3 issues, worklogs, comments, changelog, permissions) and Rovo.
    - leave one In Progress with a past due date and the comment "Blocked: waiting on the vendor's API keys".
    Leave two minutes between creating an issue and closing it: an issue created and closed within
    two minutes with no time logged is treated as an import and left out.
-3. Open **Apps → Team hygiene** in that project and pick any day of **this** week in the date picker
-   (the default is last full week). Scores tab: team tiles, per-person bars and table, failing issues and why.
+3. Open the project's **Team hygiene** tab (under **More** if the tab bar is full). It opens on the
+   current week in your own time zone. Scores tab: team tiles, per-person bars and table, failing issues and why.
 4. Judgements tab: **Judge with Claude**. Each nominated note gets a verdict and a one-sentence reason.
    As a project admin, overrule one and watch the score move; restore it.
 5. Open work tab: overdue, stale and undated issues, with Claude's view of each excuse.
 6. Settings tab: time zone, gate, whether time logging is scored, stale days, excluded labels.
-7. Rovo: open Rovo chat, pick **Hygiene Coach**, ask "How did the team do this week in <project key>?".
+7. On a site with Rovo: open Rovo chat, pick **Hygiene Coach**, ask "How did the team do this week in
+   <project key>?" or "Why is <name>'s score low?".
 
 **Video:** [YouTube link, public, under 3 minutes]
-**Repository:** [optional public repo link]
+**Repository:** https://github.com/nicappave/fair-hygiene-for-jira (MIT)

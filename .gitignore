@@ -10,3 +10,7 @@ __pycache__/
 scripts/pw.py
 scripts/pty_drive.py
 scripts/jira_admin.py
+scripts/pwd.py
+scripts/accounts.py
+video/
+scripts/seed_run.sh
